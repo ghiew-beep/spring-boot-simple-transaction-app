@@ -35,5 +35,12 @@ public class User {
 	public Long getId() { return id; }
 	public String getName() { return name; }
 	public Integer getBalance() { return balance; }
+
+	/*
+	validation to be done in service logic before calling this method
+	- check both user balance
+	- validate both against the transaction amount
+	- compute the new balance for both and set them
+	 */
 	public void setBalance(int newBalance) { balance = newBalance; }
 }
