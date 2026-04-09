@@ -24,16 +24,17 @@ public class Transaction {
 
 	private int amount;
 
+	private boolean success;
+
 	//--[constructor]-----------------------------------------------------------
 	protected Transaction() {}
 	public Transaction(User sender,
 					   User recipient,
-					   TransferCategory type,
-					   int amount) {
+					   int amount, boolean success) {
 		this.sender = sender;
 		this.recipient = recipient;
-		this.type = type;
 		this.amount = amount;
+		this.success = success;
 	}
 
 	//--[methods]---------------------------------------------------------------
@@ -42,4 +43,5 @@ public class Transaction {
 	public User getRecipient() { return  recipient; }
 	public TransferCategory getType() { return type; }
 	public int getAmount() { return amount; }
+	public boolean isSuccess() { return success; }
 }
