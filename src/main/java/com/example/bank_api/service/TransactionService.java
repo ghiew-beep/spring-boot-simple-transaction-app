@@ -1,8 +1,10 @@
 package com.example.bank_api.service;
 
+import com.example.bank_api.dto.TransactionHistoryResponseDto;
 import com.example.bank_api.exception.IllegalTransactionException;
 import com.example.bank_api.exception.UserNotFoundException;
 import com.example.bank_api.model.Transaction;
+import com.example.bank_api.model.TransferCategory;
 import com.example.bank_api.model.User;
 import com.example.bank_api.repository.TransactionRepository;
 import com.example.bank_api.repository.UserRepository;
@@ -85,14 +87,38 @@ public class TransactionService {
 		txRepository.save(newRecord);
 	}
 
-	public List<Transaction> getUserHistory(Long userId)
+	public List<TransactionHistoryResponseDto> getUserHistory(Long userId)
 			throws UserNotFoundException {
 		User user = userRepo.findById(userId)
 				.orElseThrow(() -> new UserNotFoundException("User not found"));
-		return txRepository.findBySenderIDOrRecipientId(userId, userId);
+		return txRepository.findBySenderIdOrRecipientIdAndSuccessTrue(userId, userId)
+				.stream()
+				.map(tx -> mapToDto(tx, determineTransferCategory(tx, userId)))
+				.toList();
 	}
 
-	public List<Transaction>	getFailedTransaction() {
-		return txRepository.findBySuccessFalse();
+	private TransferCategory determineTransferCategory(Transaction tx, Long userId) {
+		return tx.getSender().getId().equals(userId)
+				? TransferCategory.DEBITS
+				: TransferCategory.CREDITS;
+	}
+
+	private TransactionHistoryResponseDto mapToDto(Transaction record, TransferCategory value) {
+		TransactionHistoryResponseDto dto = new TransactionHistoryResponseDto();
+
+		dto.setTransactionID(record.getTransactionID());
+		dto.setFrom(record.getSender().getId());
+		dto.setTo(record.getRecipient().getId());
+		dto.setAmount(record.getAmount());
+		dto.setTransferCategory(value);
+
+		return dto;
+	}
+
+	public List<TransactionHistoryResponseDto>	getFailedTransaction() {
+		return txRepository.findBySuccessFalse()
+				.stream()
+				.map(tx -> mapToDto(tx, TransferCategory.DEBITS))
+				.toList();
 	}
 }
