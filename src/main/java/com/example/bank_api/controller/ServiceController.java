@@ -5,6 +5,7 @@ import com.example.bank_api.dto.TransactionRequestDto;
 import com.example.bank_api.model.User;
 import com.example.bank_api.dto.UserDto;
 import com.example.bank_api.service.TransactionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +20,13 @@ public class ServiceController {
 	}
 
 	@PostMapping("/users")
-	public User addUser(@RequestBody UserDto userDto) {
-		return service.addUser(userDto.getName(), userDto.getBalance());
+	public ResponseEntity addUser(@RequestBody UserDto userDto) {
+		try {
+			User user = service.addUser(userDto.getName(), userDto.getBalance());
+			return ResponseEntity.status(201).body(user);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 
 	@GetMapping("/users/{id}/balance")
