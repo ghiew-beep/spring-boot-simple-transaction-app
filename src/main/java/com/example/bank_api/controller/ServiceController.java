@@ -20,7 +20,7 @@ public class ServiceController {
 	}
 
 	@PostMapping("/users")
-	public ResponseEntity addUser(@RequestBody UserDto userDto) {
+	public ResponseEntity<?> addUser(@RequestBody UserDto userDto) {
 		try {
 			User user = service.addUser(userDto.getName(), userDto.getBalance());
 			return ResponseEntity.status(201).body(user);
