@@ -11,7 +11,7 @@ public class UserDto {
 	private int balance;
 
 	public String getName() { return name; }
-	public int getBalance() {return balance; }
+	public int getBalance() { return balance; }
 
 	public void setName(String name) { this.name = name; }
 	public void setBalance(int balance) { this.balance = balance; }
