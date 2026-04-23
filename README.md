@@ -15,7 +15,7 @@ This is a learning project built with Spring Boot to simulate a basic transactio
 - Failed transaction logging
 ---
 
-## 🗺️ Roadmap
+## 🗺️ TODO list
 
 ### 🟡 In Progress / Planned
 - [ ] Exception handling at service layer
