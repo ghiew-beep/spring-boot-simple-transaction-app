@@ -4,7 +4,6 @@
 ⚠️ **WORK IN PROGRESS PROJECT**
 
 This is a learning project built with Spring Boot to simulate a basic transaction system between users.  
-It is **not production-ready** and will continue to evolve as new features are added.
 ---
 
 ## 🚧 Current Status
